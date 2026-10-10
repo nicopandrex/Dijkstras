@@ -134,6 +134,55 @@ public class Graph {
 
   public Map<GraphNode, Integer> shortestPathPQ(GraphNode s) {
     // implement this
+    for(GraphNode node : this.nodes){
+      if(node == s){
+        node.distance = 0;
+      }
+      else{
+        node.distance = Integer.MAX_VALUE;
+      }
+    }
+
+    PriorityQueue<GraphNode> pq = new PriorityQueue<>();
+
+    for(GraphNode node : this.nodes){
+      pq.add(node);
+    }
+
+    List<GraphNode> S = new ArrayList<GraphNode>();
+
+    while(!pq.isEmpty()){
+
+      GraphNode v = pq.poll();
+
+      if (v.distance == Integer.MAX_VALUE){
+        break;
+      }
+
+      else{
+        for(Link e: v.adjlist){
+          if (v.distance + e.weight < e.n2.distance){
+            e.n2.distance = v.distance + e.weight;
+
+            updatePQnode(pq,e.n2);
+          }
+        }
+      }
+
+
+      S.add(v);
+
+    }
+
+    Map<GraphNode, Integer> map = new HashMap<>();
+      for(GraphNode node : S){
+        map.put(node, node.distance);
+      }
+
+    return map;
+
+
+
   } // shortestPathPQ()
 
 } // class Graph
