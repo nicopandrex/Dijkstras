@@ -78,6 +78,56 @@ public class Graph {
 
   public Map<GraphNode, Integer> shortestPath(GraphNode s) {
     // implement this
+    List<GraphNode> S = new ArrayList<>();
+    //setting the distances
+    for(GraphNode node : this.nodes ){
+      if(node == s){
+        node.distance = 0;
+      }
+      else{
+        node.distance = Integer.MAX_VALUE;
+      }
+    }
+
+    S.add(s);
+
+    while(S.size() < this.nodes.size()){
+      int canidate_dist = Integer.MAX_VALUE;
+      GraphNode canidate_next = null;
+      for(GraphNode u: S){
+        for(Link e: u.adjlist){
+          if(!S.contains(e.n2)){
+            int dist = u.distance + e.weight;
+            GraphNode v = e.n2;
+            if (dist < canidate_dist){
+              canidate_dist = dist;
+              canidate_next = v;
+
+            }
+          }
+        }
+      }
+      if(canidate_next == null){
+        break;
+      }
+      else{
+        canidate_next.distance = canidate_dist;
+        S.add(canidate_next);
+      }
+
+    }
+
+    Map<GraphNode, Integer> map = new HashMap<>();
+    for(GraphNode node: S){
+      map.put(node, node.distance);
+
+    }
+
+    return map;
+
+
+
+    
   } // shortestPath()
 
   //----------------------------------------------------
